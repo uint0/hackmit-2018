@@ -10,13 +10,14 @@
 int main() {
     libfreenect2::Freenect2 freenect2;
     libfreenect2::Freenect2Device *dev = 0;
-    libfreenect2::PacketPipeline *pipeline = new libfreenect2::CpuPacketPipeline();
+    libfreenect2::PacketPipeline *pipeline = 0;
 
     if(freenect2.enumerateDevices() == 0) {
         std::cout << "no device connected!" << std::endl;
         return -1;
     }
 
+    pipeline = new libfreenect2::CpuPacketPipeline();
     std::string serial = freenect2.getDefaultDeviceSerialNumber();
 
     dev = freenect2.openDevice(serial, pipeline);
@@ -37,10 +38,13 @@ int main() {
     auto time = std::chrono::high_resolution_clock().now();
 
     for ever {
-        listener.waitForNewFrame(frames, 10 * 1000);
+        listener.waitForNewFrame(frames);
         libfreenect2::Frame *rgb   = frames[libfreenect2::Frame::Color];
 
-        auto td = time - (time = std::chrono::high_resolution_clock().now());
+        auto oldtime = time;
+        time = std::chrono::high_resolution_clock().now();
+        auto td = time - oldtime;
+
         std::cout << std::chrono::duration_cast<std::chrono::microseconds>(td).count() << std::endl;
     }
 }
