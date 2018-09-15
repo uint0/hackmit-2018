@@ -5,6 +5,9 @@
 #include <libfreenect2/logger.h>
 #include <chrono>
 
+#include "algo.h"
+
+
 #define ever (;;)
 
 int main() {
@@ -36,10 +39,23 @@ int main() {
     std::cout << "device firmware: " << dev->getFirmwareVersion() << std::endl;
 
     auto time = std::chrono::high_resolution_clock().now();
+    auto start = time;
+    int index = 0;
 
     for ever {
+        index++;
+
         listener.waitForNewFrame(frames);
         libfreenect2::Frame *rgb   = frames[libfreenect2::Frame::Color];
+        listener.release(frames);
+
+        if (index == 10) {
+            start = std::chrono::high_resolution_clock().now();
+
+        }
+        if (index > 10) {
+        //    std::cout << "avg" << std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock().now()-start).count()/(index - 10) << std::endl;
+        }
 
         auto oldtime = time;
         time = std::chrono::high_resolution_clock().now();
