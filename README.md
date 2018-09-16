@@ -1,1 +1,3 @@
-HackMIT 2018 project
+# Photon Beacon
+## About
+Photon beacon is a low cost optical location beacon which sends out a precise pattern of RGB lights which can be located through a camera and software processing. This repository contains 3 implementations, a working python POC which processes recorded videos and 2 preliminary implementation which works in real time from the video stream of a Microsoft Kinect V2 (one in C# targeting the official Kinect SDK and a C++ implementation using the open sourced openconnect library). The signals can be picked up from a very long distance (estimated range of >100m with >10mw transmit power) by sophisticated signal processing techniques (efficient cross correlation through fast fourier transforms and inverse fast fourier transforms)
