@@ -3,8 +3,6 @@
 //
 
 #include "../algo.h"
-#include <cstdlib>
-#include <cstring>
 
 uint8_t cR[] = {
         1,1,1,1,1,1,1,1,
@@ -46,20 +44,21 @@ int main(void) {
 
     uint8_t       inp[512] = {0};
     uint8_t       rnd[512] = {0};
-    fftwf_complex out[512];
+    fftwf_complex out[512] = {0};
+    fftwf_complex ou2[512] = {0};
 
     for (unsigned char &i : inp) {
         i = (uint8_t)(random() & 0b1);
     }
 
-    for(size_t i = 0; i < 255; i++) {
+    for(size_t i = 0; i < 512; i++) {
         inp[i] = cR[i/2];
         inp[i+1] = cR[i/2];
         i++;
     }
 
-    for (unsigned char &i : rnd) {
-        i = (uint8_t)(random() & 0b11111111);
+    for(size_t i = 0; i < 512; i++) {
+        rnd[i] = static_cast<uint8_t>((i / 2) % 2);
     }
 
     puts("-- Input --");
@@ -70,19 +69,20 @@ int main(void) {
     precompute(inp, out);
 
     puts("\n-- Output --");
-    for(size_t i = 0; i < 511; i++) {
+    for(size_t i = 0; i < 512; i++) {
         printf("%f + %fi, ", out[i][0], out[i][1]);
     }
+
+    // ^ works
 
     puts("\n-- Input --");
     for (unsigned char i : rnd) {
         printf("%d, ", i);
     }
 
-
-    float f = cor(out, 512, rnd);
+    float f = cor(out, rnd, ou2);
     printf("\nCor: [%f]\n", f);
 
-    f = cor(out, 512, inp);
+    f = cor(out, inp, ou2);
     printf("\nCor: [%f]\n", f);
 }

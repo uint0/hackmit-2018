@@ -19,8 +19,10 @@ class algo {
 
     //void loadState(uint8_t state[RES_X][RES_Y][3]);
 };
+#include <vector>
+#include <complex>
 
 void  precompute(uint8_t *inp, fftwf_complex out[510]);
-float cor(fftwf_complex af[], size_t afsz, uint8_t pixData[]);
-
+float cor(fftwf_complex af[512], uint8_t pixData[512], fftwf_complex out[512]);
+std::vector<std::complex<double>> preprocess(std::vector<std::complex<double>> vec);
 #endif //CPPBE_ALGO_H
